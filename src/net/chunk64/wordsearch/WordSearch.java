@@ -1,5 +1,6 @@
 package net.chunk64.wordsearch;
 
+import com.sun.deploy.util.ArrayUtil;
 import net.chunk64.Main;
 
 import java.io.*;
@@ -12,6 +13,7 @@ public class WordSearch
 {
 	private char[][] grid;
 	private int size;
+	private String[] words;
 
 	public WordSearch(int size, int wordCount)
 	{
@@ -19,16 +21,14 @@ public class WordSearch
 		this.grid = new char[size][size];
 
 		// load random words
-		String[] words = grabWords(wordCount);
+		words = grabWords(wordCount);
 		if (words == null)
 		{
 			System.err.println("Failed to load dictionary words");
 			System.exit(-1);
 		}
 
-		System.out.println("words = " + Arrays.toString(words));
 		new WordArranger(words, this);
-
 	}
 
 	private WordSearch()
@@ -46,12 +46,16 @@ public class WordSearch
 			reader = new BufferedReader(new FileReader(file));
 
 			int character;
-			while ((character = reader.read()) != -1)
+			while ((character = reader.read()) != ':')
 			{
 				char c = (char) character;
 				if (Character.isLetter(c))
 					chars.add(c);
 			}
+
+			String wordLine = reader.readLine();
+			wordSearch.words = wordLine.substring(0, wordLine.length() - 1).split(" ");
+
 			reader.close();
 
 		} catch (IOException e)
@@ -171,9 +175,9 @@ public class WordSearch
 				stream.print(c + " ");
 			stream.println();
 		}
+		stream.println(":" + ArrayUtil.arrayToString(words).trim() + ":");
 		stream.flush();
 	}
-
 
 	public void saveToFile(File file)
 	{
@@ -211,4 +215,8 @@ public class WordSearch
 		return size;
 	}
 
+	public String[] getWords()
+	{
+		return words;
+	}
 }

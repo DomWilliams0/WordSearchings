@@ -28,52 +28,65 @@ public enum Direction
 		ALLOWED = list.toArray(new Direction[list.size()]);
 	}
 
+	public Direction opposite()
+	{
+		int d = (ordinal() + 4) % 8;
+		return values()[d];
+	}
 
 	/**
 	 * @return True if new point is valid/not outside the grid
 	 */
 	public boolean update(Point point, WordSearch wordSearch)
 	{
+		return update(point, wordSearch, 1);
+	}
+
+	public boolean update(Point point, WordSearch wordSearch, int increment)
+	{
 		switch (this)
 		{
 			case NORTH_EAST:
-				point.y--;
-				point.x++;
+				point.y -= increment;
+				point.x += increment;
 				break;
 			case EAST:
-				point.x++;
+				point.x += increment;
 				break;
 			case SOUTH_EAST:
-				point.x++;
-				point.y++;
+				point.x += increment;
+				point.y += increment;
 				break;
 			case SOUTH:
-				point.y++;
+				point.y += increment;
 				break;
 			case SOUTH_WEST:
-				point.y++;
-				point.x--;
+				point.y += increment;
+				point.x -= increment;
 				break;
 			case NORTH:
-				point.y--;
+				point.y -= increment;
 				break;
 			case WEST:
-				point.x--;
+				point.x -= increment;
 				break;
 			case NORTH_WEST:
-				point.y--;
-				point.x--;
+				point.y -= increment;
+				point.x -= increment;
 				break;
 		}
 
 		final int preX = point.x;
 		final int preY = point.y;
 
-		point.y = Math.max(point.y, 0);
-		point.y = Math.min(point.y, wordSearch.getSize() - 1);
-		point.x = Math.max(point.x, 0);
-		point.x = Math.min(point.x, wordSearch.getSize() - 1);
+		if (wordSearch != null)
+		{
+			point.y = Math.max(point.y, 0);
+			point.y = Math.min(point.y, wordSearch.getSize() - 1);
+			point.x = Math.max(point.x, 0);
+			point.x = Math.min(point.x, wordSearch.getSize() - 1);
 
+		}
 		return preX == point.x && preY == point.y;
 	}
 
@@ -81,5 +94,16 @@ public enum Direction
 	public static Direction getRandomDirection()
 	{
 		return ALLOWED[Main.RANDOM.nextInt(ALLOWED.length)];
+	}
+
+	/**
+	 * Multiple of 45
+	 * Possibly slightly hacky
+	 */
+	public static Direction fromAngle(double degrees)
+	{
+		double d = (degrees / 45 - 90 + 8) % 8 * -1;
+		d = (8 - d) % 8;
+		return values()[(int) d];
 	}
 }

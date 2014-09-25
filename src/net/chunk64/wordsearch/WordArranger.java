@@ -48,7 +48,7 @@ public class WordArranger
 
 		} while (!invalidWords.isEmpty());
 
-		System.out.println("number of generation attempts: " + attempts);
+//		System.out.println("number of generation attempts: " + attempts);
 		updateGrid();
 
 	}
@@ -59,13 +59,13 @@ public class WordArranger
 
 		for (Word word : wordPositions)
 		{
-			Point[] points = word.getPoints();
+			Point[] points = word.getPoints(wordSearch);
 			if (points == null) continue;
 
 			for (int i = 0; i < points.length; i++)
 			{
 				Point point = points[i];
-				grid[point.x][point.y] = word.word.charAt(i);
+				grid[point.x][point.y] = word.getWord().charAt(i);
 			}
 		}
 
@@ -86,8 +86,8 @@ public class WordArranger
 		// replace invalid words
 		for (Word word : invalidWords)
 		{
-			word.startingPoint = getRandomPoint();
-			word.direction = Direction.getRandomDirection();
+			word.setStartingPoint(getRandomPoint());
+			word.setDirection(Direction.getRandomDirection());
 		}
 		invalidWords.clear();
 
@@ -96,7 +96,7 @@ public class WordArranger
 		Map<Word, Point[]> allPoints = new HashMap<>();
 		for (Word word : words)
 		{
-			Point[] points = word.getPoints();
+			Point[] points = word.getPoints(wordSearch);
 			if (points == null)
 			{
 				// word sticks out of grid
@@ -152,33 +152,5 @@ public class WordArranger
 		return new Point(Main.RANDOM.nextInt(wordSearch.getSize()), Main.RANDOM.nextInt(wordSearch.getSize()));
 	}
 
-	class Word
-	{
-		private String word;
-		private Direction direction;
-		private Point startingPoint;
-
-		Word(String word, Direction direction, Point startingPoint)
-		{
-			this.word = word;
-			this.direction = direction;
-			this.startingPoint = startingPoint;
-		}
-
-		public Point[] getPoints()
-		{
-			Point[] points = new Point[word.length()];
-			Point last = new Point(startingPoint);
-
-			points[0] = new Point(startingPoint);
-			for (int i = 1; i < word.length(); i++)
-			{
-				if (!direction.update(last, wordSearch)) return null;
-
-				points[i] = last;
-				last = new Point(last);
-			}
-			return points;
-		}
-	}
 }
+
