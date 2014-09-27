@@ -1,5 +1,7 @@
 package net.chunk64.gui.wordsearch;
 
+import net.chunk64.gui.GUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -8,7 +10,6 @@ import java.util.Map;
 public class WordFrame extends JFrame
 {
 	private static final int DESIRED_HEIGHT = 600;
-	private static final Font FONT = Font.decode("Consolas");
 
 	private Map<String, WordLabel> labels;
 	private JFrame frame;
@@ -27,7 +28,7 @@ public class WordFrame extends JFrame
 	{
 		labels = new HashMap<>();
 
-		Font font = FONT.deriveFont(Font.PLAIN, 15f);
+		Font font = GUI.FONT.deriveFont(15f);
 
 		int height = DESIRED_HEIGHT / words.length;
 		height = Math.max(20, height);

@@ -5,19 +5,16 @@ import net.chunk64.gui.PanelController;
 import net.chunk64.gui.View;
 import net.chunk64.wordsearch.WordSearch;
 
-import java.io.File;
 import java.util.Random;
 
 public class Main
 {
 	public static final Random RANDOM = new Random();
-	public static boolean SHOW_SOLUTIONS = false;
 
 	public static void main(String[] args)
 	{
-		WordSearch wordSearch = WordSearch.loadFromFile(new File("wordsearch.txt"));
-		wordSearch.changeCase(true);
-
+//		WordSearch wordSearch = WordSearch.loadFromFile(new File("wordsearch.txt"));
+		WordSearch wordSearch = new WordSearch(25, 20);
 		PanelController controller = new GUI().getController();
 		controller.setWordSearch(wordSearch);
 		controller.changeView(View.WORDSEARCH);

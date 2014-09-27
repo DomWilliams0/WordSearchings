@@ -232,7 +232,7 @@ class Selection
 	public void draw(Graphics2D g2d)
 	{
 		for (Point point : cells)
-			g2d.fillRect(point.x, point.y, cellSize, cellSize);
+			g2d.fillRect(point.x + 1, point.y + 1, cellSize - 1, cellSize - 1);
 
 	}
 
@@ -257,6 +257,7 @@ class Selection
 
 		cells.clear();
 		Point next = roundToCell(start);
+		Point startCell = new Point(next);
 		Point endCell = roundToCell(end);
 
 		int count = 0;
@@ -264,9 +265,15 @@ class Selection
 		{
 			if (++count > wordSearch.getSize()) break;
 
+			if (endCell.equals(startCell))
+			{
+				cells.add(startCell);
+				break;
+			}
+
 			// outside
-			if (endCell.x >= wordSearch.getGrid().length * cellSize || endCell.x < 0) break;
-			if (endCell.y >= wordSearch.getGrid()[0].length * cellSize || endCell.y < 0) break;
+			if (next.x >= wordSearch.getGrid().length * cellSize || next.x < 0) break;
+			if (next.y >= wordSearch.getGrid()[0].length * cellSize || next.y < 0) break;
 
 			// top
 			if (endCell.y < start.y - cellSize)
@@ -290,12 +297,12 @@ class Selection
 				if (end.x <= next.x) break;
 			}
 
-
 			cells.add(next);
 
 			Point p = new Point(next);
 			direction.update(p, null, cellSize);
 			next = roundToCell(p);
+
 		}
 
 	}

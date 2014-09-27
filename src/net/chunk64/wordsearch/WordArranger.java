@@ -49,11 +49,11 @@ public class WordArranger
 		} while (!invalidWords.isEmpty());
 
 //		System.out.println("number of generation attempts: " + attempts);
-		updateGrid();
+		updateGrid(false);
 
 	}
 
-	private void updateGrid()
+	private void updateGrid(boolean cheat)
 	{
 		char[][] grid = wordSearch.getGrid();
 
@@ -74,7 +74,7 @@ public class WordArranger
 			for (int y = 0; y < wordSearch.getSize(); y++)
 			{
 				if (grid[x][y] == 0)
-					grid[x][y] = Main.SHOW_SOLUTIONS ? '.' : (char) (Main.RANDOM.nextInt(26) + 'a');
+					grid[x][y] = cheat ? '.' : (char) (Main.RANDOM.nextInt(26) + 'a');
 			}
 		}
 

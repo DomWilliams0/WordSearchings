@@ -97,7 +97,7 @@ public class WordSearch
 
 	private InputStreamReader readDictionary()
 	{
-		InputStream dictStream = WordSearch.class.getClassLoader().getResourceAsStream("dict.txt");
+		InputStream dictStream = getClass().getClassLoader().getResourceAsStream("dict.txt");
 		return new InputStreamReader(dictStream);
 	}
 

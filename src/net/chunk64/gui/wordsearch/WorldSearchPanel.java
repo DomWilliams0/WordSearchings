@@ -11,7 +11,8 @@ public class WorldSearchPanel extends JPanel
 	private WordSearch wordSearch;
 	private final int cellSize;
 
-	private static Font FONT = Font.decode("Consolas"); //todo add tff as resource
+	private static final Color GRID_COLOR = new Color(82, 82, 82);
+
 	private Font font;
 
 
@@ -20,7 +21,7 @@ public class WorldSearchPanel extends JPanel
 		this.wordSearch = wordSearch;
 		this.cellSize = (int) Math.floor((float) GUI.WINDOW_SIZE.width / wordSearch.getSize());
 
-		font = FONT.deriveFont(Font.PLAIN, cellSize);
+		font = GUI.FONT.deriveFont(Font.PLAIN, cellSize);
 
 		int preferredSize = cellSize * wordSearch.getSize();
 		setPreferredSize(new Dimension(preferredSize, preferredSize));
@@ -38,14 +39,16 @@ public class WorldSearchPanel extends JPanel
 
 		int width = g.getFontMetrics().charWidth('a');
 
+		g2d.setColor(GRID_COLOR);
+
 		for (int x = 0; x < wordSearch.getSize(); x++)
-		{
 			for (int y = 0; y < wordSearch.getSize(); y++)
-			{
 				g2d.drawRect(cellSize * x, cellSize * y, cellSize, cellSize);
+
+		g2d.setColor(Color.BLACK);
+		for (int x = 0; x < wordSearch.getSize(); x++)
+			for (int y = 0; y < wordSearch.getSize(); y++)
 				g2d.drawString(String.valueOf(wordSearch.getGrid()[y][x]), (x * cellSize) + (width * 0.4f), (y * cellSize) + (g2d.getFontMetrics().getHeight() * 0.75f));
-			}
-		}
 	}
 
 	public int getCellSize()
